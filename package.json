@@ -1,0 +1,48 @@
+{
+	"name": "vuejs-dev-challenge",
+	"version": "1.0.0",
+	"description": "Awesome Motive VueJS Developer challenge",
+	"main": "webpack.mix.js",
+	"scripts": {
+		"development:tailwind": "tailwindcss --postcss -i ./includes/admin/assets/tailwind/tailwind.pcss -c ./includes/admin/assets/tailwind/tailwind.config.js -o ./includes/public/dist/app.css",
+		"development:legacy": "cross-env NODE_ENV=development node_modules/.bin/webpack-cli --progress --config=webpack.config.js",
+		"development": "run-p development:**",
+		"dev": "yarn development",
+		"watch:tailwind": "yarn development:tailwind --watch",
+		"watch:legacy": "yarn development:legacy --watch",
+		"watch": "run-p watch:**",
+		"production:tailwind": "cross-env NODE_ENV=production yarn development:tailwind --minify",
+		"production:legacy": "cross-env NODE_ENV=production yarn development:legacy",
+		"prod": "run-p production:**",
+		"hot": "yarn development:legacy --hot"
+	},
+	"author": "Yaseen Taha",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/showyaseen/vuejs-dev-challenge/issues"
+	},
+	"homepage": "https://github.com/showyaseen/vuejs-dev-challenge/#readme",
+	"devDependencies": {
+		"cross-env": "^7.0.3",
+		"esbuild": "^0.20.0",
+		"npm-run-all": "^4.1.5",
+		"postcss": "^8.4.31",
+		"postcss-import": "^16.0.0",
+		"postcss-import-ext-glob": "^2.1.1",
+		"postcss-mixins": "^9.0.4",
+		"postcss-simple-vars": "^7.0.1"
+	},
+	"dependencies": {
+		"@babel/core": "^7.23.9",
+		"babel-loader": "^9.1.3",
+		"css-loader": "^6.10.0",
+		"tailwindcss": "^3.3.3",
+		"vue": "^3.4.16",
+		"vue-loader": "^17.4.2",
+		"vue-router": "4",
+		"vue-style-loader": "^4.1.3",
+		"vue-template-compiler": "^2.7.16",
+		"webpack": "^5.90.1",
+		"webpack-cli": "^5.1.4"
+	}
+}

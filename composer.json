@@ -1,0 +1,41 @@
+{
+    "name": "yaseentaha/vuejs-dev-challenge",
+    "type": "wordpress-plugin",
+    "authors": [
+      {
+        "name": "Yaseen Taha",
+        "email": "showyaseen@hotmail.com",
+        "homepage": "https://showyaseen@hotmail.com"
+      }
+    ],
+    "autoload": {
+      "psr-4": {
+        "YaseenTaha\\VueJSDevChallenge\\": "includes"
+      }
+    },
+    "require": {
+      "php": ">=7.4.0"
+    },
+    "require-dev": {
+      "roave/security-advisories": "dev-latest",
+      "wp-coding-standards/wpcs": "^3.0",
+      "phpunit/phpunit": "^9.6"
+    },
+    "config": {
+      "allow-plugins": {
+        "composer/installers": false,
+        "dealerdirect/phpcodesniffer-composer-installer": true
+      }
+    },
+    "scripts": {
+      "test": "./vendor/bin/phpunit",
+      "phpcs-report": "./vendor/bin/phpcs --standard=phpcs.xml --ignore=admin/build,tests",
+      "phpcs-fix": "./vendor/bin/phpcbf --standard=phpcs.xml --ignore=admin/build",
+      "post-install-cmd": [
+        "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
+      ],
+      "post-update-cmd": [
+        "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
+      ]
+    }
+  }
