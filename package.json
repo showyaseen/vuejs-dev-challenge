@@ -1,7 +1,7 @@
 {
 	"name": "vuejs-dev-challenge",
 	"version": "1.0.0",
-	"description": "Awesome Motive VueJS Developer challenge",
+	"description": "Awesome Motive VueJS Developer Challenge",
 	"main": "webpack.mix.js",
 	"scripts": {
 		"development:tailwind": "tailwindcss --postcss -i ./includes/admin/assets/tailwind/tailwind.pcss -c ./includes/admin/assets/tailwind/tailwind.config.js -o ./includes/public/dist/app.css",
