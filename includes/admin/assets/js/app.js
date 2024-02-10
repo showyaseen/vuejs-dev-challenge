@@ -1,6 +1,8 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import router from './router'; // Assuming you have a router.js file
+import router from './router';
+import 'flowbite';
+// import '../css/tailwind.css'
 
 // Create a Vue 3 app instance
 const app = createApp(App);

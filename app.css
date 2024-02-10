@@ -1,0 +1,57 @@
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-1.use[2]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[3].use[0]!./includes/admin/assets/js/App.vue?vue&type=style&index=0&id=5b8ce95e&lang=css ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************/
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
+/* Add global styles here */
+
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-1.use[2]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[3].use[0]!./includes/admin/assets/js/components/Settings.vue?vue&type=style&index=0&id=138daa28&scoped=true&lang=css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+
+  /* Add component-specific styles here */
+form[data-v-138daa28] {
+    margin-top: 20px;
+}
+label[data-v-138daa28] {
+    display: block;
+    margin-bottom: 5px;
+}
+input[data-v-138daa28], checkbox[data-v-138daa28], button[data-v-138daa28] {
+    margin-bottom: 10px;
+}
+  
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-1.use[2]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[3].use[0]!./includes/admin/assets/js/components/Table.vue?vue&type=style&index=0&id=804fd156&scoped=true&lang=css ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+
+  /* Add component-specific styles here */
+table[data-v-804fd156] {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th[data-v-804fd156], td[data-v-804fd156] {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+th[data-v-804fd156] {
+    background-color: #f2f2f2;
+}
+  
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-1.use[2]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[3].use[0]!./includes/admin/assets/js/components/Graph.vue?vue&type=style&index=0&id=1f2c4656&scoped=true&lang=css ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+
+  /* Add component-specific styles here */
+#graph-container[data-v-1f2c4656] {
+    margin-top: 20px;
+}
+  

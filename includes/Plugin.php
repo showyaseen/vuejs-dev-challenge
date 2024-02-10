@@ -183,6 +183,10 @@ class Plugin
 	}
 
     function vuejs_dev_challenge_enqueue_scripts() {
+		$screen = get_current_screen();
+		if (false === strpos($screen->id, VUEJS_DEV_CHALLENGE_PLUGIN_SLUG)) {
+			return;
+		}
         wp_enqueue_script(VUEJS_DEV_CHALLENGE_PLUGIN_SLUG.'-app', plugins_url('/public/dist/app.js', __FILE__), array(), '1.0', true);
         wp_enqueue_style(VUEJS_DEV_CHALLENGE_PLUGIN_SLUG.'-styles', plugins_url('/public/dist/app.css', __FILE__), array(), null);
     }

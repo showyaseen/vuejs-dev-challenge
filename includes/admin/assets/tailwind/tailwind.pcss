@@ -7,7 +7,7 @@
  * Exclude Tailwind's base styles because we don't need reset styles.
  * Adds custom base styles.
  */
-@import "tailwindcss/base";
+@tailwind base;
 @import "./custom/base.pcss";
 
 /**
@@ -19,7 +19,7 @@
  * line). This is meant to simplify the process of integrating styles from
  * JavaScript components or WordPress plugins.
  */
-@import "tailwindcss/components";
+@tailwind components;
 @import-glob "./custom/components/**/!(components).pcss";
 @import "./custom/components/components.pcss";
 
@@ -27,4 +27,4 @@
  * This injects Tailwind's utility classes and any utility classes registered
  * by plugins, then adds custom utility classes.
  */
-@import "tailwindcss/utilities";
+ @tailwind utilities;
