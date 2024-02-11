@@ -1,10 +1,9 @@
 <template>
-	<input type="number" :name="name" :id="id" :placeholder="placeholder" :min="min"
+	<input type="number" :name="name" :id="id" :placeholder="placeholder" :min="min" :max="max"
     class="!border-gray-300
 		!leading-5
 		!m-0
         !my-3
-        !mx-6
 		!px-3.5
 		!py-2
 		!rounded-lg
@@ -47,6 +46,10 @@ export default {
 		min: {
 			type: Number,
             default: 0
+		},
+		max: {
+			type: Number,
+            default: 5
 		},
 		value: {
 			type: Number,

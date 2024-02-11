@@ -1,9 +1,9 @@
 <template>
-  <ContentCard>
-    <HeadTitle>
+  <div>
+    <SectionTitle>
       <SettingIcon></SettingIcon>
       Settings
-    </HeadTitle>
+    </SectionTitle>
 
     <Form>
       <InputGroup>
@@ -19,54 +19,68 @@
         <CheckboxButton v-model="isHumanDate" id="isHumanDate" name="isHumanDate"></CheckboxButton>
       </InputGroup>
 
-      <Label forInput="extraEmail" title="Emails List:"></Label>
-      <InputGroup v-for="(info, index) in extraEmail" :key="index">
+      <InputGroup>
+        <Label forInput="extraEmail" title="Emails List:"></Label>
+      </InputGroup>
+      <InputList v-for="(info, index) in extraEmail" :key="index">
         <EmailInput :id="'extraEmail-' + index" v-model="extraEmail[index]" placeholder="Enter email address here ...">
         </EmailInput>
         <RemoveIcon v-if="index > 0" @click="removeExtraEmail(index)"></RemoveIcon>
-        <AddIcon v-if="index >= extraEmail.length - 1" @click="addExtraEmail"></AddIcon>
+        <AddIcon v-if="index >= extraEmail.length - 1 && extraEmail.length < 5" @click="addExtraEmail"></AddIcon>
         <ErrorMessage v-if="this.hasError.extraEmail[index] == true">
           Please enter a valid email address.
         </ErrorMessage>
-      </InputGroup>
+      </InputList>
 
+      <ErrorMessage v-for="error in Object.keys(errors)">
+          {{ errors[error] }}
+      </ErrorMessage>
+
+      <SuccessMessage v-if="savedSucess">
+          Settings saved successfuly!
+      </SuccessMessage>
 
       <FormFooter>
-        <Button @click="submitForm" color="blue">
+        <Button @click="submitForm" color="orange">
           Save Settings
         </Button>
       </FormFooter>
 
 
     </Form>
-  </ContentCard>
+  </div>
 </template>
 
 <script>
 import ContentCard from '../Layout/ContentCard.vue'
 
 import Form from '../Form/Form.vue';
-import HeadTitle from '../Form/HeadTitle.vue';
+import SectionTitle from '../Form/SectionTitle.vue';
 import FormFooter from '../Form/FormFooter.vue';
 import InputGroup from '../Form/InputGroup.vue';
+import InputList from '../Form/InputList.vue';
 import EmailInput from '../Form/EmailInput.vue';
 import NumberInput from '../form/NumberInput.vue';
 import Label from '../form/Label.vue';
 import Button from '../Form/Button.vue';
 import CheckboxButton from '../Form/CheckboxButton.vue';
 import ErrorMessage from '../Form/ErrorMessage.vue';
+import SuccessMessage from '../Form/SuccessMessage.vue';
 
 import AddIcon from '../Icons/AddIcon.vue'
 import RemoveIcon from '../Icons/RemoveIcon.vue';
 import SettingIcon from '../Icons/SettingIcon.vue';
 
+import { useSettingStore } from "../../stores/settings";
+
 export default {
   components: {
     ContentCard,
     Form,
-    HeadTitle,
+    SectionTitle,
     FormFooter,
     InputGroup,
+    InputList,
     NumberInput,
     EmailInput,
     Label,
@@ -76,17 +90,37 @@ export default {
     RemoveIcon,
     SettingIcon,
     ErrorMessage,
+    SuccessMessage
   },
   data() {
     return {
-      rowNumber: 1,
-      isHumanDate: false,
+      rowNumber: 5,
+      isHumanDate: true,
       extraEmail: [''],
       hasError: {
         rowNumber: false,
         extraEmail: [],
       },
+      store: null,
+      setting: null
     };
+  },
+  created() {
+    this.store = useSettingStore();
+  },
+  mounted() {
+    this.store.fetchSettings();
+  },
+  computed: {
+    settings() {
+      return this?.store?.settings;
+    },
+    errors() {
+      return this.store.errors;
+    },
+    savedSucess() {
+      return this.store.savedSucess;
+    }
   },
   methods: {
     submitForm() {
@@ -99,7 +133,12 @@ export default {
         return;
       }
 
-      // submission logic TODO
+      this.store.clearErrors();
+      this.store.saveSettings({
+        rowNumber: this.rowNumber,
+        isHuman: this.isHumanDate,
+        extraEmail: this.extraEmail,
+      })
     },
     addExtraEmail() {
       this.extraEmail.push('');
@@ -127,13 +166,19 @@ export default {
     }
   },
   watch: {
+    settings(settings) {
+      if(0 === settings.length) {
+        return;
+      }
+      this.rowNumber = settings.rowNumber;
+      this.isHumanDate = settings.isHuman;
+      this.extraEmail = Object.assign([], settings.extraEmail);
+    },
     rowNumber(value) {
-      console.log('watch row')
       this.validateRowNumber()
     },
     extraEmail: {
       handler(value) {
-        console.log('watch emails')
         this.validateEmails()
       },
       deep: true

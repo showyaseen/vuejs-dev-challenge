@@ -1,5 +1,5 @@
 <template>
-    <label :for="forInput" class="uppercase text-xs text-gray-500 tracking-widest my-3 mr-5">
+    <label :for="forInput" class="uppercase text-xs font-semibold text-gray-800 my-3 w-48">
     {{ title }}
     <slot></slot>
     </label>

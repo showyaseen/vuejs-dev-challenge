@@ -1,7 +1,7 @@
 <template>
-    <div class="mt-16 border-transparent border-t border-t-gray-300 border-solid">
+    <h2 class="p-4 mb-4 border-transparent border-b border-b-gray-300 border-solid">
         <slot></slot>
-    </div>
+    </h2>
 </template>
 <script>
 export default {

@@ -1,15 +1,15 @@
 <template>
   <div>
-    <HeadTitle>
+    <SectionTitle>
       <ChartIcon></ChartIcon>
       Graph
-    </HeadTitle>
+    </SectionTitle>
     <DoughnutChart :chartData="graphData" />
   </div>
 </template>
 
 <script>
-import HeadTitle from '../Form/HeadTitle.vue';
+import SectionTitle from '../Form/SectionTitle.vue';
 import ChartIcon from '../Icons/ChartIcon.vue';
 
 import { DoughnutChart } from 'vue-chart-3';
@@ -19,7 +19,7 @@ export default {
   name: 'Home',
   components: {
     DoughnutChart,
-    HeadTitle,
+    SectionTitle,
     ChartIcon
   },
   data() {
