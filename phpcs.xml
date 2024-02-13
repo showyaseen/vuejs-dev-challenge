@@ -1,67 +1,101 @@
 <?xml version="1.0"?>
-<ruleset name="PSR12-based Coding Standards">
-	<description>Custom variant of PSR12 with WordPress security checks for PHP development</description>
+<ruleset name="WordPress Theme Coding Standards">
+    <!-- Set a description for this ruleset. -->
+    <description>A custom set of code standard rules to check for WordPress themes.</description>
+    <!-- Pass some flags to PHPCS:
+         p flag: Show progress of the run.
+         s flag: Show sniff codes in all reports.
+         v flag: Print verbose output.
+         n flag: Do not print warnings.
+    -->
+    <arg value="psv"/>
 
-	<!-- Default ruleset is PSR12 with one exception - tabs instead of spaces is allowed and preferred -->
-	<rule ref="PSR12">
-		<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
-	</rule>
-	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
+    <!-- Strip the filepaths down to the relevant bit. -->
+    <arg name="basepath" value="./"/>
 
-	<!-- WordPress security rules are included to check for sanitization of WordPress code -->
-	<rule ref="WordPress.DB.PreparedSQLPlaceholders"/>
-	<rule ref="WordPress.DB.RestrictedFunctions"/>
-	<rule ref="WordPress.DB.RestrictedClasses"/>
-	<rule ref="WordPress.Security.EscapeOutput"/>
-	<rule ref="WordPress.Security.NonceVerification"/>
-	<rule ref="WordPress.WP.EnqueuedResources"/>
+    <!-- Check up to 8 files simultanously. -->
+    <arg name="parallel" value="8"/>
 
-	<!-- Check for WordPress code deprecated since version 4.9 -->
-	<rule ref="WordPress.WP.DeprecatedFunctions">
-		<properties>
-			<property name="minimum_supported_version" value="4.9" />
-		</properties>
-	<rule ref="WordPress.WP.DeprecatedClasses"/>
-		<properties>
-			<property name="minimum_supported_version" value="4.9" />
-		</properties>
-	<rule ref="WordPress.WP.DeprecatedParameters"/>
-		<properties>
-			<property name="minimum_supported_version" value="4.9" />
-		</properties>
-	<rule ref="WordPress.WP.DeprecatedParameterValues"/>
-		<properties>
-			<property name="minimum_supported_version" value="4.9" />
-		</properties>
-	<rule ref="WordPress.WP.AlternativeFunctions"/>
-		<properties>
-			<property name="minimum_supported_version" value="4.9" />
-		</properties>
-	<rule ref="WordPress.WP.DiscouragedConstants"/>
-		<properties>
-			<property name="minimum_supported_version" value="4.9" />
-		</properties>
-	<rule ref="WordPress.WP.DiscouragedFunctions"/>
-		<properties>
-			<property name="minimum_supported_version" value="4.9" />
-		</properties>
-	</rule>
+    <!-- Only check the PHP files. JS files are checked separately with JSCS and JSHint. -->
+    <arg name="extensions" value="php"/>
 
-	<!-- Exclude node and vendor directories -->
-	<exclude-pattern>*/node_modules/*</exclude-pattern>
-	<exclude-pattern>*/vendor/*</exclude-pattern>
+    <!-- Check all files in this directory and the directories below it. -->
+    <file>.</file>
 
-	<!-- Check the files in the project directory. Where this xml file should be located. -->
-	<file>.</file>
+    <!-- Ignore these directories -->
+    <exclude-pattern>./vendor</exclude-pattern>
+    <exclude-pattern>./node_modules</exclude-pattern>
+    <exclude-pattern>./includes/public</exclude-pattern>
+    <exclude-pattern>./includes/admin/assets</exclude-pattern>
 
-	<!-- Exclude the project directory path from the report, making for cleaner output. -->
-	<arg name="basepath" value="."/>
+    <!-- Include the WordPress ruleset, with exclusions. -->
+    <rule ref="WordPress">
+        <!-- Getting error on placeholder files, index.php -->
+        <exclude name="Squiz.Commenting.FileComment.SpacingAfterComment" />
+    </rule>
 
-	<!-- Check only PHP files. -->
-	<arg name="extensions" value="php"/>
+    <!-- Verify that the text_domain is set to the desired text-domain.
+         Multiple valid text domains can be provided as a comma-delimited list. -->
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array" value="wp_foundation_six" />
+        </properties>
+    </rule>
 
-	<!-- Display output in color on the command line. Show the sniffs. Show progress. -->
-	<arg name="colors" />
-	<arg value="s" />
-	<arg value="p" />
+    <!-- Allow for theme specific exceptions to the file name rules based
+         on the theme hierarchy. -->
+    <rule ref="WordPress.Files.FileName">
+        <properties>
+            <property name="is_theme" value="true" />
+        </properties>
+    </rule>
+
+    <!-- Verify that no WP functions are used which are deprecated or have been removed.
+         The minimum version set here should be in line with the minimum WP version
+         as set in the "Requires at least" tag in the readme.txt file. -->
+    <rule ref="WordPress.WP.DeprecatedFunctions">
+        <properties>
+            <property name="minimum_supported_version" value="4.5" />
+        </properties>
+    </rule>
+
+    <!-- Include sniffs for PHP cross-version compatibility. -->
+    <config name="testVersion" value="7.1-99.0"/>
+
+    <!-- Verify that everything in the global namespace is prefixed with a theme specific prefix.
+         Multiple valid prefixes can be provided as a comma-delimited list. -->
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+        <properties>
+            <property name="prefixes" type="array" value="wp_foundation_six,wpfs" />
+        </properties>
+    </rule>
+
+    <rule ref="PHPCompatibility">
+        <!-- Whitelist PHP native classes, interfaces, functions and constants which
+             are back-filled by WP.
+             Based on:
+             * /wp-includes/compat.php
+             * /wp-includes/random_compat/random.php
+        -->
+        <exclude name="PHPCompatibility.PHP.NewClasses.errorFound"/>
+        <exclude name="PHPCompatibility.PHP.NewClasses.typeerrorFound"/>
+
+        <exclude name="PHPCompatibility.PHP.NewConstants.json_pretty_printFound"/>
+        <exclude name="PHPCompatibility.PHP.NewConstants.php_version_idFound"/>
+
+        <exclude name="PHPCompatibility.PHP.NewFunctions.hash_equalsFound"/>
+        <exclude name="PHPCompatibility.PHP.NewFunctions.json_last_error_msgFound"/>
+        <exclude name="PHPCompatibility.PHP.NewFunctions.random_intFound"/>
+        <exclude name="PHPCompatibility.PHP.NewFunctions.random_bytesFound"/>
+        <exclude name="PHPCompatibility.PHP.NewFunctions.array_replace_recursiveFound"/>
+
+        <exclude name="PHPCompatibility.PHP.NewInterfaces.jsonserializableFound"/>
+    </rule>
+
+    <!-- Whitelist the WP Core mysql_to_rfc3339() function. -->
+    <rule ref="PHPCompatibility.PHP.RemovedExtensions">
+        <properties>
+            <property name="functionWhitelist" type="array" value="mysql_to_rfc3339"/>
+        </properties>
+    </rule>
 </ruleset>

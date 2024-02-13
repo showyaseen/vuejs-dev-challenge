@@ -29,8 +29,8 @@
     },
     "scripts": {
       "test": "./vendor/bin/phpunit",
-      "phpcs-report": "./vendor/bin/phpcs --standard=phpcs.xml --ignore=admin/build,tests",
-      "phpcs-fix": "./vendor/bin/phpcbf --standard=phpcs.xml --ignore=admin/build",
+      "phpcs-report": "./vendor/bin/phpcs --standard=phpcs.xml --ignore=includes/public,tests",
+      "phpcs-fix": "./vendor/bin/phpcbf --standard=phpcs.xml --ignore=includes/public",
       "post-install-cmd": [
         "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
       ],
