@@ -12,7 +12,6 @@ namespace YaseenTaha\VueJSDevChallenge;
 defined('ABSPATH') || exit;
 ?>
 
-
 <?php if (!is_admin()) : ?>
     <!-- Displayed error message when the user is not an admin -->
     <div class="flex items-center flex-shrink-0 text-gray-700 m-4 mb-6 p-2">
@@ -38,6 +37,7 @@ defined('ABSPATH') || exit;
     </div>
 
 <?php else : ?>
+
     <!-- The VueJS app will be rendered inside below div container -->
     <div id="vuejs-dev-challenge-render"></div>
 

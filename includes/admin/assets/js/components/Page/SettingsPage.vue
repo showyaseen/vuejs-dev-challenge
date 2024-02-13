@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import ContentCard from '../Layout/ContentCard.vue'
-
 import Form from '../Form/Form.vue';
 import SectionTitle from '../Form/SectionTitle.vue';
 import FormFooter from '../Form/FormFooter.vue';
@@ -59,7 +57,6 @@ import InputList from '../Form/InputList.vue';
 import EmailInput from '../Form/EmailInput.vue';
 import NumberInput from '../form/NumberInput.vue';
 import Label from '../form/Label.vue';
-import Button from '../Form/Button.vue';
 import CheckboxButton from '../Form/CheckboxButton.vue';
 import ErrorMessage from '../Form/ErrorMessage.vue';
 import SuccessMessage from '../Form/SuccessMessage.vue';
@@ -78,7 +75,6 @@ export default {
     settingStore: Object,
   },
   components: {
-    ContentCard,
     Form,
     SectionTitle,
     FormFooter,
@@ -87,7 +83,6 @@ export default {
     NumberInput,
     EmailInput,
     Label,
-    Button,
     CheckboxButton,
     AddIcon,
     RemoveIcon,
