@@ -7,7 +7,7 @@
 </template>
 <script>
 export default {
-	name: 'Email',
+    name: 'Email',
     props: {
         email: String,
     }

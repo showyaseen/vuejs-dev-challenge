@@ -16,9 +16,6 @@ if (appContainer) {
     // Use the Pinia store management
     app.use(createPinia())
 
-    // provide text_domain for other components
-    app.provide('textDomain', vuejs_dev_challenge.text_domain);
-
     // Mount the app to the #vuejs-dev-challenge-render element
-    app.mount('#vuejs-dev-challenge-render');
+    app.mount(appContainer);
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="PSR12-based Coding Standards">
-	<description>custom variant of PSR12 with WordPress security checks for PHP development</description>
+	<description>Custom variant of PSR12 with WordPress security checks for PHP development</description>
 
 	<!-- Default ruleset is PSR12 with one exception - tabs instead of spaces is allowed and preferred -->
 	<rule ref="PSR12">

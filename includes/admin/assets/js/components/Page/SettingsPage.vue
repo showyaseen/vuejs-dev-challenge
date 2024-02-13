@@ -106,10 +106,11 @@ export default {
         extraEmail: [],
       },
       settingStore: null,
+      settingsPageTitle: __('Settings', vuejs_dev_challenge.text_domain),
       messages: {
-        rowNumberError: __('Please enter a valid number of rows.', this.textDomain),
-        extraEmailError: __('Please enter a valid email address.', this.textDomain),
-        saveSuccessful: __('Settings saved successfuly!', this.textDomain),
+        rowNumberError: __('Please enter a valid number of rows.', vuejs_dev_challenge.text_domain),
+        extraEmailError: __('Please enter a valid email address.', vuejs_dev_challenge.text_domain),
+        saveSuccessful: __('Settings saved successfuly!', vuejs_dev_challenge.text_domain),
       },
       textDomain: vuejs_dev_challenge.text_domain,
     };

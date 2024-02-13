@@ -22,7 +22,6 @@ export const useDataStore = defineStore("data", {
                 this.isLoading = false;
                 this.table = Object.assign([], data?.data?.table);
                 this.graph = Object.assign([], data.data?.graph);
-                console.log(this.table, this.graph, data.data);
             }
             catch (error) {
                 this.isLoading = false;

@@ -12,7 +12,7 @@
 import Email from './Email.vue';
 import EmailIcon from '../Icons/EmailIcon.vue';
 export default {
-	name: 'EmailList',
+    name: 'EmailList',
     props: {
         emails: Array,
     },

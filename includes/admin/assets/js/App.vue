@@ -1,7 +1,6 @@
 <!-- App.vue -->
 <template>
   <div id="vuejs-dev-challenge" class="-ml-3 lg:-ml-5">
-    {{ console.log('vuejs_dev_challenge', vuejs_dev_challenge) }}
     <router-view :header="header" :tabs="tabs" />
   </div>
 </template>
@@ -14,7 +13,7 @@ export default {
   name: 'App',
   watch: {
     '$route.name'(newTab) {
-      this.tabs.currentTab = newTab || this.tabs.defaultTab;
+      this.tabs.currentTab = newTab ?? this.tabs.defaultTab;
       this.tabs.tabItems.map((item) => item.id === newTab ? item.is_active = true : item.is_active = false);
     },
   },

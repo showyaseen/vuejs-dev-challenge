@@ -11,11 +11,14 @@
       <ListIcon></ListIcon>
       {{ emailListTitle }}
     </SectionTitle>
+
     <ContentCard>
       <InputGroup>
         <EmailList :emails="settings?.extraEmail ?? []"></EmailList>
       </InputGroup>
     </ContentCard>
+
+    <Spinner v-if="isLoading"></Spinner>
   </div>
 </template>
 
@@ -29,6 +32,7 @@ import DataIcon from '../Icons/DataIcon.vue';
 import EmailIcon from '../Icons/EmailIcon.vue';
 import ListIcon from '../Icons/ListIcon.vue';
 import Table from '../Table/Table.vue';
+import Spinner from '../Form/Spinner.vue';
 
 import { useSettingStore } from "../../stores/settings";
 import { useDataStore } from "../../stores/data";
@@ -46,6 +50,7 @@ export default {
     InputGroup,
     EmailList,
     Table,
+    Spinner
   },
   created() {
     this.__ = __;

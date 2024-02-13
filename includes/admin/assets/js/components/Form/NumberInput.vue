@@ -1,6 +1,5 @@
 <template>
-	<input type="number" :name="name" :id="id" :placeholder="placeholder" :min="min" :max="max"
-    class="!border-gray-300
+	<input type="number" :name="name" :id="id" :placeholder="placeholder" :min="min" :max="max" class="!border-gray-300
 		!leading-5
 		!m-0
         !my-3
@@ -9,7 +8,7 @@
 		!rounded-lg
 		!text-sm
         text-center
-		w-24
+		w-22
 		focus-visible:!shadow-none
 		focus-visible:!border
 		focus-visible:!border-1
@@ -32,7 +31,7 @@
 export default {
 	name: 'NumberInput',
 	props: {
-        modelValue: String,
+		modelValue: String,
 		id: {
 			type: String,
 			required: true
@@ -46,11 +45,11 @@ export default {
 		},
 		min: {
 			type: Number,
-            default: 0
+			default: 0
 		},
 		max: {
 			type: Number,
-            default: 5
+			default: 5
 		},
 		value: {
 			type: Number,

@@ -4,13 +4,15 @@
       <ChartIcon></ChartIcon>
       {{ graphPageTitle }}
     </SectionTitle>
-    <LineChart :chartOptions="chartOptions" :chartData="graphData" />
+    <LineChart :chartData="graphData" />
+    <Spinner v-if="isLoading"></Spinner>
   </div>
 </template>
 
 <script>
 import SectionTitle from '../Form/SectionTitle.vue';
 import ChartIcon from '../Icons/ChartIcon.vue';
+import Spinner from '../Form/Spinner.vue';
 import { useDataStore } from "../../stores/data";
 const { __ } = wp.i18n;
 
@@ -22,7 +24,8 @@ export default {
   components: {
     LineChart,
     SectionTitle,
-    ChartIcon
+    ChartIcon,
+    Spinner
   },
   created() {
     this.__ = __;
@@ -41,26 +44,6 @@ export default {
             backgroundColor: '#e27730',
           },
         ],
-      },
-      chartOptions: {
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        tooltips: {
-          titleFontSize: 20,
-          bodyFontSize: 25,
-        },
-        scales: {
-          xAxes: [],
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: false,
-              },
-            },
-          ],
-        },
       },
       graphStore: null
     }

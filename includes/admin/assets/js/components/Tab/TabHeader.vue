@@ -4,10 +4,12 @@
             <CommandLineIcon></CommandLineIcon>
             <span class="text-xl font-semibold tracking-tight">{{ title }}</span>
         </div>
-        <span class="relative -top-10 left-[57px] -lg:top-4 lg:left-20 -md:top-14 md:left-20 uppercase font-semibold text-xs lg:tracking-widest text-gray-500 my-3"> {{ subTitle }}</span>
+        <span
+            class="relative -top-10 left-[57px] -lg:top-4 lg:left-20 -md:top-14 md:left-20 uppercase font-semibold text-xs lg:tracking-widest text-gray-500 my-3">
+            {{ subTitle }}</span>
 
         <nav class="flex items-center justify-between flex-wrap bg-white shadow-md">
-            <div class="w-full block flex-grow flex items-center w-auto">
+            <div class="flex-grow flex items-center w-auto">
                 <div class="text-sm flex-grow h-14">
                     <slot></slot>
                 </div>

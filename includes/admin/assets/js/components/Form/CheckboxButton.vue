@@ -1,6 +1,8 @@
 <template>
 	<div className="flex items-center justify-start">
-		<button @click="$emit('update:modelValue', true)" :class="true === modelValue ?'bg-[#e27730] hover:bg-[#b85a1b] text-white' : 'bg-white hover:bg-orange-50 text-orange-500'" class="active:bg-orange-300/[.3]
+		<button @click="$emit('update:modelValue', true)"
+			:class="true === modelValue ? 'bg-[#e27730] hover:bg-[#b85a1b] text-white' : 'bg-white hover:bg-orange-50 text-orange-500'"
+			class="active:bg-orange-300/[.3]
 			border
 			border-orange-400
 			border-solid
@@ -29,7 +31,9 @@
 
 		</button>
 
-		<button @click="$emit('update:modelValue', false)" :class="false === modelValue ?'bg-[#e27730] hover:bg-[#b85a1b] text-white' : 'bg-white hover:bg-orange-50 text-orange-500'" class="active:bg-orange-300/[.3]
+		<button @click="$emit('update:modelValue', false)"
+			:class="false === modelValue ? 'bg-[#e27730] hover:bg-[#b85a1b] text-white' : 'bg-white hover:bg-orange-50 text-orange-500'"
+			class="active:bg-orange-300/[.3]
 				border
 				border-orange-400
 				border-solid
@@ -64,7 +68,7 @@ export default {
 	name: 'CheckboxButton',
 	props: {
 		modelValue: {
-			type:Boolean,
+			type: Boolean,
 			default: false
 		},
 	},
