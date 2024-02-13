@@ -44,7 +44,7 @@ class Plugin
     /**
      * Method called on plugin activation.
      */
-    protected function activation()
+    public function activation()
     {
         $this->createPluginData();
     }
