@@ -3,7 +3,7 @@
 /**
  * The file that defines the core plugin class
  *
- * @package vuejs-dev-challenge
+ * @package ytaha-vuejs-dev-challenge
  */
 
 namespace YaseenTaha\VueJSDevChallenge;
@@ -16,7 +16,6 @@ use function delete_option;
 use function esc_html;
 use function esc_html__;
 use function esc_url;
-use function function_exists;
 use function is_array;
 use function printf;
 use function sprintf;
@@ -25,12 +24,6 @@ use function wp_enqueue_script;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
-
-use const VUEJS_DEV_CHALLENGE_PHP_MIN_VER;
-use const VUEJS_DEV_CHALLENGE_PLUGIN_BASENAME;
-use const VUEJS_DEV_CHALLENGE_PLUGIN_NAME;
-use const VUEJS_DEV_CHALLENGE_PLUGIN_SETTINGS_PAGE;
-use const PHP_VERSION;
 
 /**
  * The core plugin class.
@@ -52,8 +45,7 @@ class Plugin
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
-	 * Load the dependencies, define the locale, and set the hooks for the admin area and
-	 * the public-facing side of the site.
+	 * and set the hooks for the admin area and the public-facing side of the site.
 	 *
 	 * @access protected
 	 *
@@ -77,7 +69,7 @@ class Plugin
 	}
 
 	/**
-	 * Create database schema updates required to store and manage the additional analytic data
+	 * remove app stored data from wordpress options 
 	 *
 	 * @return void
 	 */
@@ -116,7 +108,7 @@ class Plugin
 	}
 
 	/**
-	 * Create database schema updates required to store and manage the additional analytic data
+	 * Create Wordpress actions required to store and manage settings data
 	 *
 	 * @return void
 	 */
@@ -144,10 +136,9 @@ class Plugin
 		}
 
 		$message = sprintf(
-			/* Translators: %1$s - Plugin name, %2$s - "PHP", %3$s - Required PHP version. */
 			esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'vuejs-dev-challenge'),
 			'<strong>' . esc_html(VUEJS_DEV_CHALLENGE_PLUGIN_NAME) . '</strong>',
-			'<strong>' . esc_html__('PHP', 'vuejs-dev-challenge') . '</strong>',
+			'<strong>' . __('PHP', 'vuejs-dev-challenge') . '</strong>',
 			VUEJS_DEV_CHALLENGE_PHP_MIN_VER
 		);
 
@@ -166,14 +157,10 @@ class Plugin
 	 */
 	public function init()
 	{
-		if (!function_exists('is_plugin_active')) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		}
 		// Check for required PHP version.
 		if (version_compare(PHP_VERSION, VUEJS_DEV_CHALLENGE_PHP_MIN_VER, '<')) {
 			add_action('admin_notices', [$this, 'adminNoticeMinimumPHPVersion']);
 			add_action('network_admin_notices', [$this, 'adminNoticeMinimumPHPVersion']);
-
 			return;
 		}
 
@@ -182,8 +169,6 @@ class Plugin
 		add_action('admin_menu', [$this, 'vuejs_dev_challenge_menu']);
 
 		add_action('rest_api_init', [$this, 'vuejs_dev_challenge_register_restful_api']);
-
-		$this->loadDependencies();
 	}
 
 	function vuejs_dev_challenge_enqueue_scripts()
@@ -195,7 +180,7 @@ class Plugin
 
 		wp_enqueue_style(VUEJS_DEV_CHALLENGE_PLUGIN_SLUG . '-styles', plugins_url('/public/dist/app.css', __FILE__), array(), null);
 
-		wp_enqueue_script(VUEJS_DEV_CHALLENGE_PLUGIN_SLUG . '-script', plugins_url('/public/dist/app.js', __FILE__), array(), '1.0', true);
+		wp_enqueue_script(VUEJS_DEV_CHALLENGE_PLUGIN_SLUG . '-script', plugins_url('/public/dist/app.js', __FILE__), array('wp-i18n'), VUEJS_DEV_CHALLENGE_PLUGIN_VERSION, true);
 
 		// localize data for script
 		wp_localize_script(
@@ -204,10 +189,10 @@ class Plugin
 			array(
 				'base_rest_url' => esc_url_raw(rest_url()),
 				'settings_rest_url' => esc_url_raw(rest_url() . VUEJS_DEV_CHALLENGE_API_NAMESPACE . '/settings'),
+				'data_rest_url' => esc_url_raw(rest_url() . VUEJS_DEV_CHALLENGE_API_NAMESPACE . '/data'),
 				'nonce' => wp_create_nonce('wp_rest'),
-				// 'success' => __( 'Post submitted', 'wp-api-vuejs-poc' ),
-				// 'failure' => __( 'Post could not be processed.', 'wp-api-vuejs-poc' ),
-				// 'current_user_id' => get_current_user_id()
+				'app_container' => VUEJS_DEV_CHALLENGE_APP_CONTAINER,
+				'text_domain' => VUEJS_DEV_CHALLENGE_TEXT_DOMAIN
 			)
 		);
 	}
@@ -219,8 +204,8 @@ class Plugin
 
 		add_submenu_page(
 			VUEJS_DEV_CHALLENGE_PLUGIN_SLUG,
-			esc_html__('Table', 'vuejs-dev-challenge'),
-			esc_html__('Table', 'vuejs-dev-challenge'),
+			__('Table', 'vuejs-dev-challenge'),
+			__('Table', 'vuejs-dev-challenge'),
 			'manage_options',
 			VUEJS_DEV_CHALLENGE_PLUGIN_SLUG . '#/table',
 			[$this, 'vuejs_dev_challenge_admin_page'],
@@ -228,8 +213,8 @@ class Plugin
 		);
 		add_submenu_page(
 			VUEJS_DEV_CHALLENGE_PLUGIN_SLUG,
-			esc_html__('Graph', 'vuejs-dev-challenge'),
-			esc_html__('Graph', 'vuejs-dev-challenge'),
+			__('Graph', 'vuejs-dev-challenge'),
+			__('Graph', 'vuejs-dev-challenge'),
 			'manage_options',
 			VUEJS_DEV_CHALLENGE_PLUGIN_SLUG . '#/graph',
 			[$this, 'vuejs_dev_challenge_admin_page'],
@@ -237,8 +222,8 @@ class Plugin
 		);
 		add_submenu_page(
 			VUEJS_DEV_CHALLENGE_PLUGIN_SLUG,
-			esc_html__('Settings', 'vuejs-dev-challenge'),
-			esc_html__('Settings', 'vuejs-dev-challenge'),
+			__('Settings', 'vuejs-dev-challenge'),
+			__('Settings', 'vuejs-dev-challenge'),
 			'manage_options',
 			VUEJS_DEV_CHALLENGE_PLUGIN_SLUG . '#/settings',
 			[$this, 'vuejs_dev_challenge_admin_page'],
@@ -261,7 +246,7 @@ class Plugin
 					$response_data = [
 						'rowNumber' => get_option(VUEJS_DEV_CHALLENGE_ROWS_NO, 5),
 						'isHuman' => get_option(VUEJS_DEV_CHALLENGE_DATE_IN_HUMAN, TRUE),
-						'extraEmail' => get_option(VUEJS_DEV_CHALLENGE_EMAILS),
+						'extraEmail' => get_option(VUEJS_DEV_CHALLENGE_EMAILS, []),
 					];
 					return new WP_REST_Response($response_data, 200);
 				},
@@ -270,49 +255,62 @@ class Plugin
 				'route' => '/settings',
 				'method' => 'PUT',
 				'callback' => function (WP_REST_Request $request) {
-
 					$data = $request->get_json_params();
 					$settings = $data['settings'] ?? [];
+					$rowNumber = !empty($settings['rowNumber']) ? absint($settings['rowNumber']) : 0;
+					if (!empty($settings['extraEmail'])) {
+						$extraEmail = [];
+						foreach ($settings['extraEmail'] as $email) {
+							$extraEmail[] = sanitize_email($email);
+						}
+					}
+					$isHuman = array_key_exists('isHuman', $settings) ? absint($settings['isHuman']) : 0;
 
 					// Validate each input field
-					if (
-						empty($settings['rowNumber']) ||
-						!is_numeric($settings['rowNumber']) ||
-						$settings['rowNumber'] > 5 ||
-						$settings['rowNumber'] < 1
-					) {
-						$errors['rowNumber'] = __('Server Error: Row number field is invalid.', 'dxp-toolkit');
+					if (array_key_exists('rowNumber', $settings)) {
+						if (
+							!is_numeric($rowNumber) ||
+							$rowNumber > 5 ||
+							$rowNumber < 1
+						) {
+							$errors['rowNumber'] = __('Server Error: Row number field is invalid.', 'vuejs-dev-challenge');
+						} else {
+							update_option(VUEJS_DEV_CHALLENGE_ROWS_NO, $rowNumber);
+						}
 					}
 
-					if (empty($settings['extraEmail']) || !is_array($settings['extraEmail'])) {
-						$errors['extraEmail'] = __('Server Error: Extra Email field is invalid.', 'dxp-toolkit');
-					} else {
-						foreach ($settings['extraEmail'] as $email) {
-							if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-								$errors['extraEmail'] = __('Server Error: Extra Email List is invalid.', 'dxp-toolkit');
-								break;
+					if (array_key_exists('extraEmail', $settings)) {
+						if (!is_array($extraEmail)) {
+							$errors['extraEmail'] = __('Server Error: Extra Email field is invalid.', 'vuejs-dev-challenge');
+						} else {
+							foreach ($extraEmail as $email) {
+								if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+									$errors['extraEmail'] = __('Server Error: Extra Email List is invalid.', 'vuejs-dev-challenge');
+									break;
+								}
+							}
+							if (empty($errors['extraEmail'])) {
+								update_option(VUEJS_DEV_CHALLENGE_EMAILS, $extraEmail);
 							}
 						}
 					}
+
+					if (array_key_exists('isHuman', $settings)) {
+						update_option(VUEJS_DEV_CHALLENGE_DATE_IN_HUMAN, $isHuman);
+					}
+
 
 					// If there are validation errors, return a response with errors
 					if (!empty($errors)) {
 						return new WP_Error(
 							'invalid_data',
-							__('Validation failed.', 'dxp-toolkit'),
+							__('Validation failed.', 'vuejs-dev-challenge'),
 							['status' => 400, 'errors' => $errors]
 						);
 					}
 
-					update_option(VUEJS_DEV_CHALLENGE_ROWS_NO, $settings['rowNumber']);
-					update_option(VUEJS_DEV_CHALLENGE_DATE_IN_HUMAN, "1" == $settings['isHuman']);
-					update_option(VUEJS_DEV_CHALLENGE_EMAILS, $settings['extraEmail']);
 
-					return new WP_REST_Response([
-						'rowNumber' => $settings['rowNumber'],
-						'isHuman' => $settings['isHuman'],
-						'extraEmail' => $settings['extraEmail']
-					], 200);
+					return new WP_REST_Response($settings, 200);
 				},
 			],
 			[
@@ -328,34 +326,60 @@ class Plugin
 					// Check if the cached data is still valid (less than one hour old)
 					if (false === $cached_data || false === $timestamp || current_time('timestamp') - $timestamp > HOUR_IN_SECONDS) {
 						// If not cached or expired, fetch data from the remote server
-						$remote_data = wp_remote_get('https://miusage.com/v1/challenge/2/static/');
+						$remote_data = wp_remote_get(VUEJS_DEV_CHALLENGE_REMOTE_DATA_URL);
 
 						if (!is_wp_error($remote_data) && wp_remote_retrieve_response_code($remote_data) === 200) {
-							// Parse and process the remote data as needed
+							// Parse and process the remote data
 							$parsed_data = json_decode(wp_remote_retrieve_body($remote_data), true);
 
-							// Cache the parsed data and timestamp in options
-							update_option('remote_data', $parsed_data, false);
+							// Sanitize and escape remote data
+							$sanitized_graph = [];
+							foreach ($parsed_data['graph'] as $graph) {
+								$sanitized_graph[] = [
+									'date' => !empty($graph['date']) ? absint($graph['date']) : 0,
+									'value' => !empty($graph['value']) ? absint($graph['value']) : 0
+								];
+							}
+
+							$sanitized_table = [];
+							$sanitized_table['title'] = sanitize_text_field($parsed_data['table']['title'] ?? '');
+							$sanitized_table['headers'] = [];
+							$sanitized_table['rows'] = [];
+
+							if ($parsed_data['table']['data']['headers'] ?? false) {
+								foreach ($parsed_data['table']['data']['headers'] as $header) {
+									$sanitized_table['headers'][] = sanitize_text_field($header);
+								}
+							}
+							if ($parsed_data['table']['data']['rows'] ?? false) {
+								foreach ($parsed_data['table']['data']['rows'] as $row) {
+									$row['id'] = !empty($row['id']) ? absint($row['id']) : 0;
+									$row['pageviews'] = !empty($row['pageviews']) ? absint($row['pageviews']) : 0;
+									$row['title'] = !empty($row['title']) ? sanitize_text_field($row['title']) : '';
+									$row['url'] = !empty($row['url']) ? esc_url_raw($row['url']) : '';
+									$row['date'] = !empty($row['date']) ? absint($row['date']) : 0;
+
+									$sanitized_table['rows'][] = $row;
+								}
+							}
+
+							$sanitized_data = ['graph' => $sanitized_graph, 'table' => $sanitized_table];
+
+							// Cache the sanitized data and timestamp in options
+							update_option('remote_data', $sanitized_data, false);
 							update_option('remote_data_timestamp', current_time('timestamp'), false);
 
-							print_r('return fresh copy');
-
-							return new WP_REST_Response($parsed_data, 200);
-						} else {
-							// Handle error when fetching remote data
-							return array(); // or any default value or error handling logic
+							return new WP_REST_Response($sanitized_data, 200);
+						} else if(false === $cached_data) {
+							// Handle error if cache is empty and failed to fetching remote data
+							return new WP_Error(
+								'cannot_fetch_remote_data',
+								__('Unable to fetch the remote data.', 'vuejs-dev-challenge'),
+								['status' => 400]
+							);
 						}
 					}
-					print_r('return cached');
 					return new WP_REST_Response($cached_data, 200);
-					// Return the cached data
-					// return $cached_data;
-					// $response = wp_remote_get("https://miusage.com/v1/challenge/2/static/");
-					// if (is_wp_error($response) || 200 != wp_remote_retrieve_response_code($response)) {
-					// 	print_r('error happend');
-					// }
-					// $response = json_decode(wp_remote_retrieve_body($response));
-					// return new WP_REST_Response($response, 200);
 				},
 			],
 		];
@@ -367,33 +391,14 @@ class Plugin
 				'permission_callback' =>  function () {
 					rest_cookie_check_errors(null);
 					$user = wp_get_current_user();
-
 					// Restrict endpoint to only users who have administrator capability.
-					// if (!in_array('administrator', $user->roles)) {
-					// 	return new WP_Error('rest_forbidden', esc_html__('Unauthenticated', 'vuejs-dev-challenge'), ['status' => 401]);
-					// }
+					if (!in_array('administrator', $user->roles) || false === current_user_can( 'manage_options' )) {
+						return new WP_Error('rest_forbidden', __('Unauthenticated', 'vuejs-dev-challenge'), ['status' => 401]);
+					}
 					return true;
 				},
 			]);
 		}
-	}
-
-	/**
-	 * Load dependencies.
-	 *
-	 * @access private
-	 *
-	 * @return void
-	 */
-	private function loadDependencies()
-	{
-		require_once ABSPATH . 'wp-load.php';
-		require_once ABSPATH . 'wp-includes/pluggable.php';
-		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
-		require_once ABSPATH . 'wp-admin/includes/file.php';
-		require_once ABSPATH . 'wp-admin/includes/misc.php';
-		require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 	}
 
 	/**
@@ -408,7 +413,7 @@ class Plugin
 		$settings_anchor = sprintf(
 			'<a href="%s">%s</a>',
 			esc_url(admin_url('admin.php?page=' . VUEJS_DEV_CHALLENGE_PLUGIN_SLUG . '#/settings')),
-			esc_html__('Settings', 'vuejs-dev-challenge')
+			__('Settings', 'vuejs-dev-challenge')
 		);
 		if (!is_array($settings)) {
 			return [$settings_anchor];

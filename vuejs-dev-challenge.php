@@ -3,17 +3,17 @@
 // phpcs:disable Generic.Files.LineLength.TooLong
 
 /**
- * Plugin implement vuejs developer challenge.
+ * The plugin addresses the Vue.js developer challenge, as presented by Awesome Motive, as part of the application process for the WordPress Developer position.
  *
  * Plugin Name:       Yaseen Taha VueJS Developer Challenge
- * Plugin URI:        https://showyaseen@hotmail.com
- * Description:       Plugin implement vuejs developer challenge.
+ * Plugin URI:        https://github.com/showyaseen/yaseentaha-vuejs-dev-challenge
+ * Description:       The plugin addresses the Vue.js developer challenge, as presented by Awesome Motive, as part of the application process for the WordPress Developer position.
  * Version:           1.0.0
  * Author:            Yaseen Taha
- * Text Domain:       vuejs-dev-challenge
+ * Text Domain:       ytaha-vuejs-dev-challenge
  * Domain Path:       /languages/
  *
- * @package           vuejs-dev-challenge
+ * @package           ytaha-vuejs-dev-challenge
  */
 
 namespace YaseenTaha\VueJSDevChallenge;
@@ -26,40 +26,34 @@ use function plugin_dir_path;
 defined('WPINC') || die;
 // phpcs:enable
 
-define('VUEJS_DEV_CHALLENGE_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('VUEJS_DEV_CHALLENGE_PLUGIN_URL', plugins_url('/', __FILE__));
-define('VUEJS_DEV_CHALLENGE_PLUGIN_FILE', VUEJS_DEV_CHALLENGE_PLUGIN_DIR . 'vuejs-dev-challenge-pro.php');
+// core plugin information
 define('VUEJS_DEV_CHALLENGE_PLUGIN_BASENAME', plugin_basename(__FILE__));
-
 define('VUEJS_DEV_CHALLENGE_PLUGIN_NAME', 'Yaseen Taha VueJS Developer Challenge');
-define('VUEJS_DEV_CHALLENGE_PLUGIN_SLUG', 'vuejs-dev-challenge');
+define('VUEJS_DEV_CHALLENGE_PLUGIN_SLUG', 'ytaha-vuejs-dev-challenge');
 define('VUEJS_DEV_CHALLENGE_PLUGIN_VERSION', '1.0.0');
+define('VUEJS_DEV_CHALLENGE_TEXT_DOMAIN', 'ytaha-vuejs-dev-challenge');
 
-define('VUEJS_DEV_CHALLENGE_PLUGIN_ADDON_SETTINGS_GROUP', 'VUEJS_DEV_CHALLENGE_addon_settings');
 
-
-define('VUEJS_DEV_CHALLENGE_PLUGIN_SETTINGS_PAGE', VUEJS_DEV_CHALLENGE_PLUGIN_SLUG . '-settings');
-
+// remote data cache expiry time
 define('VUEJS_DEV_CHALLENGE_CACHED_DATA_EXPIRY_TIME', 2123467898);
 
+// Minmum php version
 define('VUEJS_DEV_CHALLENGE_PHP_MIN_VER', '7.4');
 
-define('VUEJS_DEV_CHALLENGE_ADMIN_LIBS_JS_DIR', plugin_dir_path(__FILE__) . 'admin/libs/js/');
-define('VUEJS_DEV_CHALLENGE_ADMIN_LIBS_JS_URL', plugins_url('/admin/libs/js/', __FILE__));
-define('VUEJS_DEV_CHALLENGE_ADMIN_LIBS_CSS_DIR', plugin_dir_path(__FILE__) . 'admin/libs/css/');
-define('VUEJS_DEV_CHALLENGE_ADMIN_LIBS_CSS_URL', plugins_url('/admin/libs/css/', __FILE__));
-define('VUEJS_DEV_CHALLENGE_ADMIN_LIBS_FONTS_DIR', plugin_dir_path(__FILE__) . 'admin/libs/fonts/');
-define('VUEJS_DEV_CHALLENGE_ADMIN_LIBS_FONTS_URL', plugins_url('/admin/libs/fonts/', __FILE__));
-define('VUEJS_DEV_CHALLENGE_ADMIN_BUILD_DIR', plugin_dir_path(__FILE__) . 'admin/build/');
-define('VUEJS_DEV_CHALLENGE_ADMIN_BUILD_URL', plugins_url('/admin/build/', __FILE__));
 
-// Option names
-define('VUEJS_DEV_CHALLENGE_ROWS_NO', 'vuejs_dev_challenge_rows_no');
-define('VUEJS_DEV_CHALLENGE_DATE_IN_HUMAN', 'vuejs_dev_challenge_in_human');
-define('VUEJS_DEV_CHALLENGE_EMAILS', 'vuejs_dev_challenge_emails');
+// Option names to store app settings
+define('VUEJS_DEV_CHALLENGE_ROWS_NO', 'ytaha_vuejs_dev_challenge_rows_no');
+define('VUEJS_DEV_CHALLENGE_DATE_IN_HUMAN', 'ytaha_vuejs_dev_challenge_in_human');
+define('VUEJS_DEV_CHALLENGE_EMAILS', 'ytaha_vuejs_dev_challenge_emails');
 
 // Rest API
-define('VUEJS_DEV_CHALLENGE_API_NAMESPACE', 'vuejsdevchallenge/v1');
+define('VUEJS_DEV_CHALLENGE_API_NAMESPACE', 'ytahavuejsdevchallenge/v1');
+
+// remote data url
+define('VUEJS_DEV_CHALLENGE_REMOTE_DATA_URL', 'https://miusage.com/v1/challenge/2/static/');
+
+// vue js app container
+define('VUEJS_DEV_CHALLENGE_APP_CONTAINER', 'vuejs-dev-challenge-render');
 
 // phpcs:disable
 require_once plugin_dir_path(__FILE__) . 'vendor/autoload.php';

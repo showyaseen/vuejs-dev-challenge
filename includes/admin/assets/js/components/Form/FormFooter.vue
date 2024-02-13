@@ -5,6 +5,6 @@
 </template>
 <script>
 export default {
-    name: "SectionTitle"
+    name: "FormFooter"
 };
 </script>

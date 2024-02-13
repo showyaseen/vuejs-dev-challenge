@@ -1,24 +1,33 @@
 import { defineStore } from 'pinia'
 // Import axios to make HTTP requests
 import axios from "axios"
-export const useSettingStore = defineStore("setting", {
+export const useDataStore = defineStore("data", {
     state: () => ({
-        settings: [],
+        table: [],
+        graph: [],
+        errors: [],
+        isLoading: false
     }),
-    getters: {
-        getSettings(state) {
-            return state.settings
-        }
-    },
     actions: {
-        async fetchSettings() {
+        async fetchData() {
             try {
-                const data = await axios.get('https://jsonplaceholder.typicode.com/settings')
-                this.settings = data.data
+                this.isLoading = true;
+                const data = await axios.get(vuejs_dev_challenge.data_rest_url,
+                    {
+                        headers: {
+                            'content-type': 'application/json',
+                            'X-WP-Nonce': vuejs_dev_challenge.nonce
+                        }
+                    })
+                this.isLoading = false;
+                this.table = Object.assign([], data?.data?.table);
+                this.graph = Object.assign([], data.data?.graph);
+                console.log(this.table, this.graph, data.data);
             }
             catch (error) {
-                console.log(error)
+                this.isLoading = false;
+                this.errors = error?.response?.data?.data?.errors;
             }
-        }
+        },
     },
 })

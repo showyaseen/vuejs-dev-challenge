@@ -61,12 +61,12 @@
 </template>
 <script>
 export default {
+	name: 'CheckboxButton',
 	props: {
 		modelValue: {
 			type:Boolean,
 			default: false
 		},
 	},
-	name: 'CheckboxButton'
 };
 </script>

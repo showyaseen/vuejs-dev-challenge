@@ -8,7 +8,8 @@
 		!py-2
 		!rounded-lg
 		!text-sm
-		w-5/12
+		lg:w-5/12
+		w-10/12
 		focus-visible:!shadow-none
 		focus-visible:!border
 		focus-visible:!border-1
@@ -29,6 +30,7 @@
 
 <script>
 export default {
+	name: 'EmailInput',
 	props: {
 		modelValue: String,
 		id: {

@@ -1,9 +1,10 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
-import Settings from './components/Page/Settings.vue';
-import Table from './components/Page/Table.vue';
-import Graph from './components/Page/Graph.vue';
+import Settings from './components/Page/SettingsPage.vue';
+import Table from './components/Page/TablePage.vue';
+import Graph from './components/Page/GraphPage.vue';
 import Tabs from './components/Tab/Tabs.vue';
+
 
 const routes = [
   {
@@ -17,7 +18,7 @@ const routes = [
       { path: 'graph', component: Graph, name: 'graph', props: true },
       { path: 'settings', component: Settings, name: 'settings', props: true },
     ]
-  },
+  }
 ];
 
 const router = createRouter({

@@ -5,19 +5,13 @@ export const useSettingStore = defineStore("settings", {
     state: () => ({
         settings: [],
         errors: [],
-        savedSucess: false
+        savedSucess: false,
+        isLoading: false
     }),
-    getters: {
-        getSettings(state) {
-            return state.settings
-        },
-        getErrors(state) {
-            return state.errors
-        }
-    },
     actions: {
         async fetchSettings() {
             try {
+                this.isLoading = true;
                 const data = await axios.get(vuejs_dev_challenge.settings_rest_url,
                     {
                         headers: {
@@ -25,9 +19,11 @@ export const useSettingStore = defineStore("settings", {
                             'X-WP-Nonce': vuejs_dev_challenge.nonce
                         }
                     })
+                this.isLoading = false;
                 this.settings = data.data;
             }
             catch (error) {
+                this.isLoading = false;
                 this.errors = error?.response?.data?.data?.errors;
             }
         },
@@ -43,7 +39,9 @@ export const useSettingStore = defineStore("settings", {
                             'X-WP-Nonce': vuejs_dev_challenge.nonce
                         }
                     })
-                this.settings = data.data
+                Object.keys(data.data).forEach((key) => {
+                    this.settings[key] = data.data[key];
+                });
                 this.savedSucess = true;
                 setTimeout(() => this.savedSucess = false, 5000)
             }

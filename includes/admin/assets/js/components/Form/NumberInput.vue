@@ -30,6 +30,7 @@
 
 <script>
 export default {
+	name: 'NumberInput',
 	props: {
         modelValue: String,
 		id: {

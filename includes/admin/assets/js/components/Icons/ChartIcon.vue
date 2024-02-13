@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "SettingIcon"
+  name: "ChartIcon"
 };
 </script>
 

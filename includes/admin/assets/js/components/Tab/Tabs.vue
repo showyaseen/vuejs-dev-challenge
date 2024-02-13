@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--Tabs header-->
-    <TabHeader :title="header.title">
+    <TabHeader :title="header.title" :subTitle="header.subTitle">
       <TabButton v-for="tab_item in tabs.tabItems" :data="tab_item" :is_active="tabs.currentTab === tab_item.id">
       </TabButton>
     </TabHeader>
@@ -24,7 +24,8 @@ export default {
   name: 'Tabs',
   props: {
     header: {
-      title: String
+      title: String,
+      subTitle: String
     },
     tabs: {
       tabItems: Array,

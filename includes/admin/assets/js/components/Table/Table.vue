@@ -8,6 +8,7 @@
 import TableHead from './TableHead.vue';
 import TableBody from './TableBody.vue';
 export default {
+    name: "Table",
     props: {
         headers: {
             type: Array,

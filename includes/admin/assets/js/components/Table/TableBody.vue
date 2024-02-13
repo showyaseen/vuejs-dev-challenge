@@ -1,11 +1,12 @@
 <template>
     <tbody>
-        <Row :headers="headers" :rows="rows"></Row>
+        <Row v-for="(row, index) in rows" :headers="headers" :row="row"></Row>
     </tbody>
 </template>
 <script>
 import Row from './Row.vue';
 export default {
+    name: "TableBody",
     props: {
         headers: {
             type: Array,

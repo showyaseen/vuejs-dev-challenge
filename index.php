@@ -1,3 +1,3 @@
 <?php
 
-// Slience is awesome!
+// Slience is Awesome!
