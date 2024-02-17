@@ -106,6 +106,8 @@ class RestfulAPIController
      */
     public function updateSettings(WP_REST_Request $request)
     {
+        $errors = [];
+        $extraEmail = [];
         // Retrieve the 'settings' data from the request payload.
         $data = $request->get_json_params();
         $settings = $data['settings'] ?? [];
@@ -125,8 +127,6 @@ class RestfulAPIController
                 update_option(YTAHA_VUEJS_DEV_CHALLENGE_ROWS_NO, $rowNumber);
             }
         }
-
-        $errors = [];
 
         // Sanitize and Validate 'extraEmail' setting list.
         if (array_key_exists('extraEmail', $settings)) {
@@ -197,7 +197,7 @@ class RestfulAPIController
             // If not cached or expired, fetch data from the remote server.
             $remote_data = wp_remote_get(YTAHA_VUEJS_DEV_CHALLENGE_REMOTE_DATA_URL);
 
-            if (!is_wp_error($remote_data) && wp_remote_retrieve_response_code($remote_data) === 200) {
+            if (!is_wp_error($remote_data) && 200 === wp_remote_retrieve_response_code($remote_data)) {
                 // Parse the remote data.
                 $parsed_data = json_decode(wp_remote_retrieve_body($remote_data), true);
 

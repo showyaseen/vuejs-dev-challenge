@@ -112,7 +112,7 @@ export default {
       }
       this.rows = this.rows?.map((row) => {
         let mappedRow = Object.assign([], row);
-        if (mappedRow['date'] && true == this.settings?.isHuman) {
+        if (mappedRow['date'] && true === this.settings?.isHuman) {
           mappedRow['date'] = this.toHumanDate(mappedRow['date'])
         }
         return mappedRow;

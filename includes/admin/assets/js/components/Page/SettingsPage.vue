@@ -133,7 +133,6 @@ export default {
     }
   },
   methods: {
-
     saveSetting(setting) {
       // clear errors before submit setting
       this.hasError = {
