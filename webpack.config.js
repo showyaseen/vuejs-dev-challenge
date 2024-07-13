@@ -6,7 +6,7 @@ module.exports = {
         app: './includes/admin/assets/js/app.js',
     },
     output: {
-        publicPath: '/wp-content/plugins/vuejs-dev-challenge/',
+        publicPath: '/wp-content/plugins/admin-dashboard/',
         filename: 'includes/public/dist/[name].js',
         path: path.resolve(__dirname),
     },

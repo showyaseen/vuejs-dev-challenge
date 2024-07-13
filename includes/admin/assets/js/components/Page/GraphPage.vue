@@ -10,15 +10,24 @@
 </template>
 
 <script>
+/**
+ * AdminDashboard Plugin - GraphPage Component
+ * @file GraphPage.vue
+ * @description This component renders a graph page within the Admin Dashboard plugin.
+ *              It fetches graph data from the store and displays it using a line chart.
+ *              The component also shows a loading spinner while data is being fetched.
+ */
+
 import SectionTitle from '../Form/SectionTitle.vue';
 import ChartIcon from '../Icons/ChartIcon.vue';
 import Spinner from '../Form/Spinner.vue';
 import { useDataStore } from "../../stores/data";
-const { __ } = wp.i18n;
-
 import { LineChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
+
+const { __ } = wp.i18n;
 Chart.register(...registerables);
+
 export default {
   name: 'GraphPage',
   components: {
@@ -27,19 +36,15 @@ export default {
     ChartIcon,
     Spinner
   },
-  created() {
-    this.__ = __;
-    this.graphStore = useDataStore();
-  },
   data() {
     return {
-      textDomain: vuejs_dev_challenge.text_domain,
-      graphPageTitle: __('Graph', vuejs_dev_challenge.text_domain),
+      textDomain: admin_dashboard.text_domain,
+      graphPageTitle: __('Graph', admin_dashboard.text_domain),
       graphData: {
         labels: [],
         datasets: [
           {
-            label: __('Dialy Page Views Counts', vuejs_dev_challenge.text_domain),
+            label: __('Daily Page Views Counts', admin_dashboard.text_domain),
             data: [],
             backgroundColor: '#e27730',
           },
@@ -47,6 +52,10 @@ export default {
       },
       graphStore: null
     }
+  },
+  created() {
+    this.__ = __;
+    this.graphStore = useDataStore();
   },
   computed: {
     isLoading() {

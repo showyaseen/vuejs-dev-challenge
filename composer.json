@@ -1,5 +1,6 @@
 {
-    "name": "yaseentaha/vuejs-dev-challenge",
+    "name": "ytaha/admin-dashboard",
+    "description": "The AdminDashboard plugin is an experimental learning tool that showcases an admin dashboard integrating external data into tables and charts. It includes settings forms for customizing date formats and managing email lists. This plugin demonstrates the use of WordPress admin hooks, Vue.js for the frontend, and PHP for backend logic and API integration.",
     "type": "wordpress-plugin",
     "authors": [
       {
@@ -10,7 +11,7 @@
     ],
     "autoload": {
       "psr-4": {
-        "YaseenTaha\\VueJSDevChallenge\\": "includes"
+        "YTAHA\\Dashboard\\": "includes"
       }
     },
     "require": {

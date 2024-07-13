@@ -8,8 +8,13 @@
     <Form>
       <InputGroup>
         <Label forInput="rowNumber" :title="__('Number of Rows:', textDomain)"></Label>
-        <NumberInput v-on:blur="saveSetting('rowNumber')" v-model="rowNumber" id="rowNumber" name="rowNumber"
-          :placeholder="__('rows no', textDomain)"></NumberInput>
+        <NumberInput
+          v-on:blur="saveSetting('rowNumber')"
+          v-model="rowNumber"
+          id="rowNumber"
+          name="rowNumber"
+          :placeholder="__('rows no', textDomain)">
+        </NumberInput>
         <ErrorMessage v-if="this.hasError.rowNumber">
           {{ messages.rowNumberError }}
         </ErrorMessage>
@@ -17,7 +22,11 @@
 
       <InputGroup>
         <Label forInput="isHuman" :title="__('Human Date Format ?', textDomain)"></Label>
-        <CheckboxButton v-on:click="saveSetting('isHuman')" v-model="isHuman" id="isHuman" name="isHuman">
+        <CheckboxButton
+          v-on:click="saveSetting('isHuman')"
+          v-model="isHuman"
+          id="isHuman"
+          name="isHuman">
         </CheckboxButton>
       </InputGroup>
 
@@ -25,7 +34,10 @@
         <Label forInput="extraEmail" :title="__('Emails List:', textDomain)"></Label>
       </InputGroup>
       <InputList v-for="(info, index) in extraEmail" :key="index">
-        <EmailInput v-on:blur="saveSetting('extraEmail')" :id="'extraEmail-' + index" v-model="extraEmail[index]"
+        <EmailInput
+          v-on:blur="saveSetting('extraEmail')"
+          :id="'extraEmail-' + index"
+          v-model="extraEmail[index]"
           :placeholder="__('Enter email address here ...', textDomain)">
         </EmailInput>
         <RemoveIcon v-if="index > 0" @click="removeExtraEmail(index)"></RemoveIcon>
@@ -49,6 +61,15 @@
 </template>
 
 <script>
+/**
+ * AdminDashboard Plugin - SettingsPage Component
+ *
+ * @package       ytaha-admin-dashboard
+ * @description   This component is part of the AdminDashboard plugin, an experimental learning tool that showcases
+ *                an admin dashboard integrating external data into tables and charts. This file defines the SettingsPage
+ *                component, responsible for rendering settings forms for customizing date formats and managing email lists.
+ *
+ */
 import Form from '../Form/Form.vue';
 import SectionTitle from '../Form/SectionTitle.vue';
 import FormFooter from '../Form/FormFooter.vue';
@@ -101,17 +122,17 @@ export default {
         extraEmail: [],
       },
       settingStore: null,
-      settingsPageTitle: __('Settings', vuejs_dev_challenge.text_domain),
+      settingsPageTitle: __('Settings', admin_dashboard.text_domain),
       messages: {
-        rowNumberError: __('Please enter a valid number of rows.', vuejs_dev_challenge.text_domain),
-        extraEmailError: __('Please enter a valid email address.', vuejs_dev_challenge.text_domain),
-        saveSuccessful: __('Settings saved successfuly!', vuejs_dev_challenge.text_domain),
+        rowNumberError: __('Please enter a valid number of rows.', admin_dashboard.text_domain),
+        extraEmailError: __('Please enter a valid email address.', admin_dashboard.text_domain),
+        saveSuccessful: __('Settings saved successfully!', admin_dashboard.text_domain),
       },
-      textDomain: vuejs_dev_challenge.text_domain,
+      textDomain: admin_dashboard.text_domain,
     };
   },
   created() {
-    // add translation method to component data so it can be access inside component
+    // Add translation method to component data so it can be accessed inside the component
     this.__ = __;
     this.settingStore = useSettingStore();
   },
@@ -134,7 +155,7 @@ export default {
   },
   methods: {
     saveSetting(setting) {
-      // clear errors before submit setting
+      // Clear errors before submitting settings
       this.hasError = {
         rowNumber: false,
         extraEmail: [],
@@ -145,8 +166,7 @@ export default {
           return;
         }
       } else if ('extraEmail' === setting) {
-        if (
-          JSON.stringify(this.settings.extraEmail) === JSON.stringify(this.extraEmail) || this.validateEmails()) {
+        if (JSON.stringify(this.settings.extraEmail) === JSON.stringify(this.extraEmail) || this.validateEmails()) {
           return;
         }
       } else if ('isHuman' === setting) {

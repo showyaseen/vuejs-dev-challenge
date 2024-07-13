@@ -1,13 +1,20 @@
 <?php
 
 /**
- * Restful API Controller this is a class that register and implements api endpoints provide
- * functionality that required by vuejs challenge developer app
+ * RESTful API Controller
+ * @package     ytaha-admin-dashboard
+ * @description This class registers and implements API endpoints to provide functionality
+ * required to show data on the admin dashboard from an external API.
  *
- * @package ytaha-vuejs-dev-challenge
+ *
+ * Plugin Name:   Admin Dashboard
+ * Plugin URI:    https://github.com/showyaseen/ytaha-admin-dashboard
+ * Version:       1.0.0
+ * Author:        Yaseen Taha
+ * Text Domain:   ytaha-admin-dashboard
  */
 
-namespace YaseenTaha\VueJSDevChallenge;
+namespace YTAHA\Dashboard;
 
 use WP_Error;
 use WP_REST_Request;
@@ -27,45 +34,45 @@ class RestfulAPIController
     /**
      * Initialize the RESTful API registration.
      *
-     * This method registers the 'registerRestfulAPI' using 'rest_api_init' action hook.
+     * This method registers the 'register_restful_api' using 'rest_api_init' action hook.
      */
     public function init()
     {
-        add_action('rest_api_init', [$this, 'registerRestfulAPI']);
+        add_action('rest_api_init', [$this, 'register_restful_api']);
     }
 
     /**
      * Define and register RESTful API routes.
      */
-    public function registerRestfulAPI()
+    public function register_restful_api()
     {
         $endpoints = [
-            ['route' => '/settings', 'method' => 'GET', 'callback' => [$this, 'getSettings']],
-            ['route' => '/settings', 'method' => 'PUT', 'callback' => [$this, 'updateSettings']],
-            ['route' => '/data', 'method' => 'GET', 'callback' => [$this, 'getData']]
+            ['route' => '/settings', 'method' => 'GET', 'callback' => [$this, 'get_settings']],
+            ['route' => '/settings', 'method' => 'PUT', 'callback' => [$this, 'update_settings']],
+            ['route' => '/data', 'method' => 'GET', 'callback' => [$this, 'get_data']]
         ];
 
         foreach ($endpoints as $endpoint) {
-            register_rest_route(YTAHA_VUEJS_DEV_CHALLENGE_API_NAMESPACE, $endpoint['route'], [
+            register_rest_route(YTAHA_ADMIN_DASHBOARD_API_NAMESPACE, $endpoint['route'], [
                 'methods' => $endpoint['method'],
                 'callback' => $endpoint['callback'],
-                'permission_callback' =>  [$this, 'restPermissionCallback']
+                'permission_callback' =>  [$this, 'rest_permission_callback']
             ]);
         }
     }
 
     /**
      * Permission callback for RESTful API.
-     * only users with admin capabilities can access the API.
+     * Only users with admin capabilities can access the API.
      *
      * @return bool|WP_Error
      */
-    public function restPermissionCallback()
+    public function rest_permission_callback()
     {
         $user = wp_get_current_user();
 
         if (!in_array('administrator', $user->roles) || false === current_user_can('manage_options')) {
-            return new WP_Error('rest_forbidden', __('Unauthenticated', YTAHA_VUEJS_DEV_CHALLENGE_TEXT_DOMAIN), ['status' => 401]);
+            return new WP_Error('rest_forbidden', __('Unauthenticated', YTAHA_ADMIN_DASHBOARD_TEXT_DOMAIN), ['status' => 401]);
         }
 
         return true;
@@ -74,20 +81,20 @@ class RestfulAPIController
     /**
      * Get all settings from database.
      *
-     * This function retrieves all settings for the Vue.js development challenge app.
-     * It retrieves the values of three options ('rowNumber', 'isHuman', and 'extraEmail')
+     * This function retrieves all settings for the admin dashboard page.
+     * It retrieves the values of three options ('row_number', 'is_human', and 'extra_email')
      * If any of the options don't exist, default values are used.
      *
      * @param WP_REST_Request $request The REST request object.
      * @return WP_REST_Response The REST response object containing the settings data.
      */
-    public function getSettings(WP_REST_Request $request)
+    public function get_settings(WP_REST_Request $request)
     {
         $user = wp_get_current_user();
         $response_data = [
-            'rowNumber' => get_option(YTAHA_VUEJS_DEV_CHALLENGE_ROWS_NO, 5),
-            'isHuman' => get_option(YTAHA_VUEJS_DEV_CHALLENGE_DATE_IN_HUMAN, true),
-            'extraEmail' => get_option(YTAHA_VUEJS_DEV_CHALLENGE_EMAILS, [$user->user_email]),
+            'row_number' => get_option(YTAHA_ADMIN_DASHBOARD_ROWS_NO, 5),
+            'is_human' => get_option(YTAHA_ADMIN_DASHBOARD_DATE_IN_HUMAN, true),
+            'extra_email' => get_option(YTAHA_ADMIN_DASHBOARD_EMAILS, [$user->user_email]),
         ];
 
         return new WP_REST_Response($response_data, 200);
@@ -104,65 +111,65 @@ class RestfulAPIController
      * @param WP_REST_Request $request The REST request object.
      * @return WP_REST_Response|WP_Error The REST response object containing the updated settings.
      */
-    public function updateSettings(WP_REST_Request $request)
+    public function update_settings(WP_REST_Request $request)
     {
         $errors = [];
-        $extraEmail = [];
+        $extra_email = [];
         // Retrieve the 'settings' data from the request payload.
         $data = $request->get_json_params();
         $settings = $data['settings'] ?? [];
 
-        // Validate and Sanitize 'rowNumber' setting.
-        if (array_key_exists('rowNumber', $settings)) {
-            // Sanitize rowNumber setting.
-            $rowNumber = !empty($settings['rowNumber']) ? absint($settings['rowNumber']) : 0;
+        // Validate and Sanitize 'row_number' setting.
+        if (array_key_exists('row_number', $settings)) {
+            // Sanitize row_number setting.
+            $row_number = !empty($settings['row_number']) ? absint($settings['row_number']) : 0;
             if (
-                !is_numeric($rowNumber) ||
-                $rowNumber > 5 ||
-                $rowNumber < 1
+                !is_numeric($row_number) ||
+                $row_number > 5 ||
+                $row_number < 1
             ) {
-                $errors['rowNumber'] = __('Server Error: Rows number setting should take value from 1 to 5.', YTAHA_VUEJS_DEV_CHALLENGE_TEXT_DOMAIN);
+                $errors['row_number'] = __('Server Error: Rows number setting should take value from 1 to 5.', YTAHA_ADMIN_DASHBOARD_TEXT_DOMAIN);
             } else {
-                // Update 'rowNumber' setting option.
-                update_option(YTAHA_VUEJS_DEV_CHALLENGE_ROWS_NO, $rowNumber);
+                // Update 'row_number' setting option.
+                update_option(YTAHA_ADMIN_DASHBOARD_ROWS_NO, $row_number);
             }
         }
 
-        // Sanitize and Validate 'extraEmail' setting list.
-        if (array_key_exists('extraEmail', $settings)) {
-            if (empty($settings['extraEmail']) || !is_array($settings['extraEmail'])) {
-                $errors['extraEmail'] = __('Server Error: Extra Emails list is empty.', YTAHA_VUEJS_DEV_CHALLENGE_TEXT_DOMAIN);
+        // Sanitize and Validate 'extra_email' setting list.
+        if (array_key_exists('extra_email', $settings)) {
+            if (empty($settings['extra_email']) || !is_array($settings['extra_email'])) {
+                $errors['extra_email'] = __('Server Error: Extra Emails list is empty.', YTAHA_ADMIN_DASHBOARD_TEXT_DOMAIN);
             } else {
-                foreach ($settings['extraEmail'] as $email) {
+                foreach ($settings['extra_email'] as $email) {
                     // Sanitize email setting value.
                     $email = sanitize_email($email);
                     // Validate if the email value follow the correct emails format.
                     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                        $errors['extraEmail'] = __('Server Error: Extra Email List is invalid.', YTAHA_VUEJS_DEV_CHALLENGE_TEXT_DOMAIN);
+                        $errors['extra_email'] = __('Server Error: Extra Email List is invalid.', YTAHA_ADMIN_DASHBOARD_TEXT_DOMAIN);
                         break;
                     } else {
                         // Add Sanitized and Validated email to the list.
-                        $extraEmail[] = $email;
+                        $extra_email[] = $email;
                     }
                 }
-                // Update 'extraEmail' setting in database if all emails in the list is valid.
-                if (empty($errors['extraEmail'])) {
-                    update_option(YTAHA_VUEJS_DEV_CHALLENGE_EMAILS, $extraEmail);
+                // Update 'extra_email' setting in database if all emails in the list is valid.
+                if (empty($errors['extra_email'])) {
+                    update_option(YTAHA_ADMIN_DASHBOARD_EMAILS, $extra_email);
                 }
             }
         }
 
-        // Sanitize and Update 'isHuman' setting option.
-        if (array_key_exists('isHuman', $settings)) {
-            $isHuman = array_key_exists('isHuman', $settings) ? absint($settings['isHuman']) : 0;
-            update_option(YTAHA_VUEJS_DEV_CHALLENGE_DATE_IN_HUMAN, $isHuman);
+        // Sanitize and Update 'is_human' setting option.
+        if (array_key_exists('is_human', $settings)) {
+            $is_human = array_key_exists('is_human', $settings) ? absint($settings['is_human']) : 0;
+            update_option(YTAHA_ADMIN_DASHBOARD_DATE_IN_HUMAN, $is_human);
         }
 
         // If there are validation errors, return a WP_Error object.
         if (!empty($errors)) {
             return new WP_Error(
                 'invalid_data',
-                __('Validation failed.', YTAHA_VUEJS_DEV_CHALLENGE_TEXT_DOMAIN),
+                __('Validation failed.', YTAHA_ADMIN_DASHBOARD_TEXT_DOMAIN),
                 ['status' => 400, 'errors' => $errors]
             );
         }
@@ -184,7 +191,7 @@ class RestfulAPIController
      * @return WP_REST_Response|WP_Error Returns a REST response containing the sanitized data
      *                                  if successful, or a WP_Error object on failure.
      */
-    public function getData(WP_REST_Request $request)
+    public function get_data(WP_REST_Request $request)
     {
         // Check if the data is already cached in the options.
         $cached_data = get_option('cached_data');
@@ -195,7 +202,7 @@ class RestfulAPIController
         // Check if the cached data is still valid (less than one hour old).
         if (false === $cached_data || false === $timestamp || current_time('timestamp') - $timestamp > HOUR_IN_SECONDS) {
             // If not cached or expired, fetch data from the remote server.
-            $remote_data = wp_remote_get(YTAHA_VUEJS_DEV_CHALLENGE_REMOTE_DATA_URL);
+            $remote_data = wp_remote_get(YTAHA_ADMIN_DASHBOARD_REMOTE_DATA_URL);
 
             if (!is_wp_error($remote_data) && 200 === wp_remote_retrieve_response_code($remote_data)) {
                 // Parse the remote data.
@@ -239,13 +246,13 @@ class RestfulAPIController
                 update_option('cached_data', $sanitized_data, false);
                 update_option('cached_data_timestamp', current_time('timestamp'), false);
 
-                // Return sanitized data afer cached in database
+                // Return sanitized data after cached in the database
                 return new WP_REST_Response($sanitized_data, 200);
             } elseif (false === $cached_data) {
                 // Handle error if cache is empty and failed to fetch remote data.
                 return new WP_Error(
                     'cannot_fetch_remote_data',
-                    __('Unable to fetch the remote data.', YTAHA_VUEJS_DEV_CHALLENGE_TEXT_DOMAIN),
+                    __('Unable to fetch the remote data.', YTAHA_ADMIN_DASHBOARD_TEXT_DOMAIN),
                     ['status' => 400]
                 );
             }

@@ -18,7 +18,7 @@ export default {
     name: "Spinner",
     data() {
         return {
-            textDomain: vuejs_dev_challenge.text_domain
+            textDomain: admin_dashboard.text_domain
         }
     },
     created() {
