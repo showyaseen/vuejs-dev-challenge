@@ -18,7 +18,7 @@
     <!-- Content Card for Email List -->
     <ContentCard>
       <InputGroup>
-        <EmailList :emails="settings?.extraEmail ?? []"></EmailList>
+        <EmailList :emails="settings?.extra_email ?? []"></EmailList>
       </InputGroup>
     </ContentCard>
 
@@ -119,14 +119,14 @@ export default {
         return;
       }
 
-      if (this.settings?.rowNumber && this.tableRows.length > this.settings.rowNumber) {
-        this.rows = this.tableRows.slice(0, this.settings.rowNumber);
+      if (this.settings?.row_number && this.tableRows.length > this.settings.row_number) {
+        this.rows = this.tableRows.slice(0, this.settings.row_number);
       } else {
         this.rows = this.tableRows.slice();
       }
       this.rows = this.rows?.map((row) => {
         let mappedRow = Object.assign([], row);
-        if (mappedRow['date'] && true === this.settings?.isHuman) {
+        if (mappedRow['date'] && true === this.settings?.is_human) {
           mappedRow['date'] = this.toHumanDate(mappedRow['date']);
         }
         return mappedRow;

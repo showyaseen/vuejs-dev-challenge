@@ -7,43 +7,43 @@
 
     <Form>
       <InputGroup>
-        <Label forInput="rowNumber" :title="__('Number of Rows:', textDomain)"></Label>
+        <Label forInput="row_number" :title="__('Number of Rows:', textDomain)"></Label>
         <NumberInput
-          v-on:blur="saveSetting('rowNumber')"
-          v-model="rowNumber"
-          id="rowNumber"
-          name="rowNumber"
+          v-on:blur="saveSetting('row_number')"
+          v-model="row_number"
+          id="row_number"
+          name="row_number"
           :placeholder="__('rows no', textDomain)">
         </NumberInput>
-        <ErrorMessage v-if="this.hasError.rowNumber">
-          {{ messages.rowNumberError }}
+        <ErrorMessage v-if="this.hasError.row_number">
+          {{ messages.row_numberError }}
         </ErrorMessage>
       </InputGroup>
 
       <InputGroup>
-        <Label forInput="isHuman" :title="__('Human Date Format ?', textDomain)"></Label>
+        <Label forInput="is_human" :title="__('Human Date Format ?', textDomain)"></Label>
         <CheckboxButton
-          v-on:click="saveSetting('isHuman')"
-          v-model="isHuman"
-          id="isHuman"
-          name="isHuman">
+          v-on:click="saveSetting('is_human')"
+          v-model="is_human"
+          id="is_human"
+          name="is_human">
         </CheckboxButton>
       </InputGroup>
 
       <InputGroup>
-        <Label forInput="extraEmail" :title="__('Emails List:', textDomain)"></Label>
+        <Label forInput="extra_email" :title="__('Emails List:', textDomain)"></Label>
       </InputGroup>
-      <InputList v-for="(info, index) in extraEmail" :key="index">
+      <InputList v-for="(info, index) in extra_email" :key="index">
         <EmailInput
-          v-on:blur="saveSetting('extraEmail')"
-          :id="'extraEmail-' + index"
-          v-model="extraEmail[index]"
+          v-on:blur="saveSetting('extra_email')"
+          :id="'extra-email-' + index"
+          v-model="extra_email[index]"
           :placeholder="__('Enter email address here ...', textDomain)">
         </EmailInput>
-        <RemoveIcon v-if="index > 0" @click="removeExtraEmail(index)"></RemoveIcon>
-        <AddIcon v-if="index >= extraEmail.length - 1 && extraEmail.length < 5" @click="addExtraEmail"></AddIcon>
-        <ErrorMessage v-if="this.hasError.extraEmail[index] == true">
-          {{ messages.extraEmailError }}
+        <RemoveIcon v-if="index > 0" @click="removeextraEmail(index)"></RemoveIcon>
+        <AddIcon v-if="index >= extra_email.length - 1 && extra_email.length < 5" @click="addextraEmail"></AddIcon>
+        <ErrorMessage v-if="this.hasError.extra_email[index] == true">
+          {{ messages.extra_emailError }}
         </ErrorMessage>
       </InputList>
 
@@ -114,18 +114,18 @@ export default {
   },
   data() {
     return {
-      rowNumber: null,
-      isHuman: false,
-      extraEmail: [],
+      row_number: null,
+      is_human: false,
+      extra_email: [],
       hasError: {
-        rowNumber: false,
-        extraEmail: [],
+        row_number: false,
+        extra_email: [],
       },
       settingStore: null,
       settingsPageTitle: __('Settings', admin_dashboard.text_domain),
       messages: {
-        rowNumberError: __('Please enter a valid number of rows.', admin_dashboard.text_domain),
-        extraEmailError: __('Please enter a valid email address.', admin_dashboard.text_domain),
+        row_numberError: __('Please enter a valid number of rows.', admin_dashboard.text_domain),
+        extra_emailError: __('Please enter a valid email address.', admin_dashboard.text_domain),
         saveSuccessful: __('Settings saved successfully!', admin_dashboard.text_domain),
       },
       textDomain: admin_dashboard.text_domain,
@@ -157,20 +157,20 @@ export default {
     saveSetting(setting) {
       // Clear errors before submitting settings
       this.hasError = {
-        rowNumber: false,
-        extraEmail: [],
+        row_number: false,
+        extra_email: [],
       }
       this.settingStore.clearErrors();
-      if ('rowNumber' === setting) {
-        if (this.settings.rowNumber === this.rowNumber || this.validateRowNumber()) {
+      if ('row_number' === setting) {
+        if (this.settings.row_number === this.row_number || this.validaterowNumber()) {
           return;
         }
-      } else if ('extraEmail' === setting) {
-        if (JSON.stringify(this.settings.extraEmail) === JSON.stringify(this.extraEmail) || this.validateEmails()) {
+      } else if ('extra_email' === setting) {
+        if (JSON.stringify(this.settings.extra_email) === JSON.stringify(this.extra_email) || this.validateEmails()) {
           return;
         }
-      } else if ('isHuman' === setting) {
-        if (this.settings.isHuman === this.isHuman) {
+      } else if ('is_human' === setting) {
+        if (this.settings.is_human === this.is_human) {
           return;
         }
       } else {
@@ -180,29 +180,29 @@ export default {
       request[setting] = this[setting];
       this.settingStore.saveSettings(request)
     },
-    addExtraEmail() {
-      this.extraEmail.push('');
+    addextraEmail() {
+      this.extra_email.push('');
     },
-    removeExtraEmail(index) {
-      this.extraEmail.splice(index, 1);
-      this.saveSetting('extraEmail');
+    removeextraEmail(index) {
+      this.extra_email.splice(index, 1);
+      this.saveSetting('extra_email');
     },
-    validateRowNumber() {
-      this.hasError.rowNumber = false;
-      if (this.rowNumber === null || isNaN(this.rowNumber) || this.rowNumber < 1 || this.rowNumber > 5) {
-        this.hasError.rowNumber = true;
+    validaterowNumber() {
+      this.hasError.row_number = false;
+      if (this.row_number === null || isNaN(this.row_number) || this.row_number < 1 || this.row_number > 5) {
+        this.hasError.row_number = true;
         return true;
       }
     },
     validateEmails() {
       let inValid = false;
-      this.extraEmail.every((email, index) => {
+      this.extra_email.every((email, index) => {
         var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         if (!email.match(validRegex)) {
-          this.hasError.extraEmail[index] = true;
+          this.hasError.extra_email[index] = true;
           inValid = true;
         } else {
-          this.hasError.extraEmail[index] = false;
+          this.hasError.extra_email[index] = false;
         }
         return true;
       });
@@ -212,17 +212,18 @@ export default {
       if (0 === settings.length) {
         return;
       }
-      if (settings.rowNumber) {
-        this.rowNumber = settings.rowNumber;
+      if (settings.row_number) {
+        this.row_number = settings.row_number;
       }
-      if (settings.extraEmail) {
-        this.extraEmail = Object.assign([], settings.extraEmail);
+      if (settings.extra_email) {
+        this.extra_email = Object.assign([], settings.extra_email);
       }
-      this.isHuman = (true === settings.isHuman || "1" == settings.isHuman);
+      this.is_human = (true === settings.is_human || "1" == settings.is_human);
     }
   },
   watch: {
     settings(settings) {
+      console.log('this.settingStore.settings', this.settingStore.settings);
       this.syncFields(settings);
     },
   }

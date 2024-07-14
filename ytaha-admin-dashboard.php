@@ -6,7 +6,7 @@
  *
  * Plugin Name:       Admin Dashboard
  * Plugin URI:        https://github.com/showyaseen/ytaha-admin-dashboard
- * Description:       The AdminDashboard plugin is an experimental learning tool that showcases an admin dashboard integrating external data into tables and charts. It includes settings forms for customizing date formats and managing email lists. This plugin demonstrates the use of WordPress admin hooks, Vue.js for the frontend, and PHP for backend logic and API integration.
+ * Description:       The AdminDashboard plugin is an experimental learning work that showcases an admin dashboard integrating external data into tables and charts. It includes settings forms for customizing date formats and managing email lists. This plugin demonstrates the use of WordPress admin hooks, Vue.js for the frontend, and PHP for backend logic and API integration.
  * Version:           1.0.0
  * Author:            Yaseen Taha
  * Text Domain:       ytaha-admin-dashboard
@@ -56,5 +56,5 @@ define('YTAHA_ADMIN_DASHBOARD_APP_CONTAINER', 'admin-dashboard-render');
 require_once plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 
 // Initialize the plugin.
-Plugin::getInstance();
+Plugin::get_instance();
 // phpcs:enable
