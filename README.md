@@ -1,126 +1,71 @@
-### Admin Dashboard Plugin
-
 #### Plugin Description
 
-The Ytaha Admin Dashboard plugin enhances the WordPress admin dashboard by integrating external data and providing additional functionality. It allows users to view and manage data fetched from an external API, configure settings, and display data in a user-friendly manner using Vue.js.
+**Admin Dashboard** is a WordPress plugin designed to fetch and display data from an external API on the WordPress admin dashboard. It provides settings for configuring the data display and includes RESTful API endpoints for managing the data. This plugin demonstrates the use of WordPress admin hooks, Vue.js for the frontend, and PHP for backend logic and API integration.
 
----
+#### User Documentation and Usage
 
-#### Installation
+1. **Configuration**
+   - Navigate to the Admin Dashboard settings page via the admin menu.
+   - Configure the data display settings such as date formats and email list management.
 
-1. **Download the Plugin:**
-   - Download the Ytaha Admin Dashboard plugin from the official website or plugin repository.
-
-2. **Upload the Plugin:**
-   - Navigate to the WordPress admin dashboard.
-   - Go to `Plugins > Add New > Upload Plugin`.
-   - Choose the downloaded plugin file and click `Install Now`.
-
-3. **Activate the Plugin:**
-   - After installation, click `Activate` to enable the plugin.
-
-#### Configuration
-
-1. **Access Plugin Settings:**
-   - Navigate to `Settings > Ytaha Admin Dashboard`.
-   - Configure the settings as per your requirements:
-     - **Rows Number:** Set the number of rows to display.
-     - **Date Format:** Choose between human-readable or standard date format.
-     - **Extra Emails:** Add additional email addresses to receive notifications.
-
-2. **View Dashboard:**
-   - Go to `Dashboard > Ytaha Admin Dashboard` to view the integrated data.
-   - The dashboard displays data fetched from the external API, including graphs and tables.
-
-#### Usage
-
-1. **Fetching Data:**
-   - The plugin automatically fetches data from the external API at regular intervals.
-   - The data is cached to improve performance and reduce the number of API requests.
-
-2. **Updating Settings:**
-   - Update settings from the `Settings > Ytaha Admin Dashboard` page.
-   - Changes are saved and applied immediately.
-
-3. **Data Visualization:**
-   - The dashboard provides visual representation of the data using charts and tables.
-   - Users can interact with the data to gain insights and make informed decisions.
-
----
+2. **Usage**
+   - The plugin fetches data from a specified external API and displays it in tables and charts on the admin dashboard.
+   - Users can customize settings to tailor the data presentation according to their preferences.
 
 ### Technical Documentation
 
-#### Overview
+#### Main Plugin File: `admin-dashboard.php`
 
-The Ytaha Admin Dashboard plugin is designed to fetch and display data from an external API on the WordPress admin dashboard. It provides settings for configuring the data display and includes RESTful API endpoints for managing the data.
+This file serves as the entry point for the plugin. It sets up the plugin initialization, hooks, and includes necessary dependencies.
 
-#### File Structure
+#### Initialization and Setup: `Plugin.php`
 
-1. **Main Plugin File:** `ytaha-admin-dashboard.php`
-   - This file initializes the plugin, registers activation hooks, and loads necessary dependencies.
+- **`Plugin.php`**: Contains the core functionality of the plugin, including initialization and setup of hooks and filters.
+- **`RestfulAPIController.php`**: Manages the RESTful API endpoints for data operations.
 
-2. **Includes:**
-   - `class-dashboard.php`: Contains the `Dashboard` class responsible for rendering the dashboard page.
-   - `class-restful-api-controller.php`: Contains the `RestfulAPIController` class that handles RESTful API endpoints.
-   - `class-plugin-activator.php`: Contains the `Plugin_Activator` class that manages plugin activation tasks.
-   - `class-plugin-deactivator.php`: Contains the `Plugin_Deactivator` class that handles plugin deactivation tasks.
+#### Admin Interface: `views/admin-dashboard.php`
 
-3. **Admin:**
-   - `class-admin.php`: Contains the `Admin` class that adds menu items and enqueues admin scripts and styles.
-   - `partials/ytaha-admin-dashboard-display.php`: The template file for displaying the admin dashboard page.
+The admin interface is built using Vue.js components and Tailwind CSS for styling. The following files are involved:
 
-4. **Assets:**
-   - `css/ytaha-admin-dashboard-admin.css`: Contains the CSS styles for the admin dashboard.
-   - `js/ytaha-admin-dashboard-admin.js`: Contains the JavaScript code for the admin dashboard.
+- **JavaScript Components:**
+  - **`App.vue`**: Main application component.
+  - **`router.js`**: Defines routes for different views.
+  - **Stores**:
+    - `data.js`: Manages the state of the fetched data.
+    - `settings.js`: Manages the state of the plugin settings.
+  - **Components**:
+    - Page Components: `SettingsPage.vue`, `TablePage.vue`, `GraphPage.vue`
+    - Form Components: Various input and message components.
+    - Layout Components: `ContentCard.vue`
+    - Tab Components: `Tabs.vue`, `TabContent.vue`, `TabButton.vue`, `TabHeader.vue`
+    - Table Components: `Table.vue`, `TableBody.vue`, `TableHead.vue`, `Row.vue`
+    - Icon Components: Various SVG icons.
 
-#### Implementation Details
+- **Tailwind CSS:**
+  - Configuration: `tailwind.config.js`
+  - Custom Styles: `custom/base.pcss`, `custom/fonts.pcss`, `custom/components/components.pcss`
 
-1. **Dashboard Class (`class-dashboard.php`):**
-   - Responsible for rendering the admin dashboard page.
-   - Fetches and displays data using Vue.js components.
 
-2. **RESTful API Controller (`class-restful-api-controller.php`):**
-   - Registers RESTful API endpoints using the `rest_api_init` action hook.
-   - Defines routes for fetching and updating settings (`/settings`) and fetching data (`/data`).
-   - Implements permission checks to ensure only authorized users can access the API.
-   - Retrieves, sanitizes, and caches data fetched from the external API.
+### Files Brief Description
 
-3. **Settings Management:**
-   - Settings are managed through the WordPress options API.
-   - Users can update settings via the RESTful API or the admin settings page.
+1. **`admin-dashboard.php`**: Main plugin file.
+2. **`Plugin.php`**: Core plugin functionality.
+3. **`RestfulAPIController.php`**: Manages RESTful API endpoints.
+4. **Vue Components**:
+   - **Page Components**: Handle different admin views.
+   - **Form Components**: Handle user inputs.
+   - **Layout Components**: Handle content layout.
+   - **Tab Components**: Handle tabbed navigation.
+   - **Table Components**: Handle data display in table format.
+   - **Icon Components**: Provide various SVG icons.
+5. **Tailwind CSS Files**: Handle styling and custom CSS.
 
-#### RESTful API Endpoints
 
-1. **GET /settings:**
-   - Fetches the current plugin settings.
+### Technologies Used
 
-2. **PUT /settings:**
-   - Updates the plugin settings based on the request payload.
-
-3. **GET /data:**
-   - Retrieves data from the external API and caches it for efficient retrieval.
-
----
-
-### Technology Used
-
-1. **WordPress:**
-   - The plugin is built as a WordPress plugin, utilizing WordPress hooks, filters, and the REST API.
-
-2. **PHP:**
-   - Core plugin functionality is implemented in PHP.
-   - Classes and methods are used to organize code and follow best practices.
-
-3. **JavaScript (Vue.js):**
-   - The admin dashboard interface is built using Vue.js for a reactive and interactive experience.
-   - Vue components handle data visualization and user interactions.
-
-4. **HTML/CSS:**
-   - The plugin's admin pages are styled using custom CSS.
-   - HTML templates are used for rendering the admin dashboard and settings pages.
-
-5. **External API:**
-   - The plugin fetches data from an external API to display on the admin dashboard.
-   - Data is sanitized and cached for performance optimization.
-
----
+- **WordPress**: Plugin development framework.
+- **PHP**: Backend development language.
+- **JavaScript (Vue.js)**: Frontend development framework for admin interface.
+- **Tailwind CSS**: Utility-first CSS framework for styling.
+- **Composer**: Dependency management for PHP.
+- **NPM/Yarn**: Dependency management for JavaScript.
